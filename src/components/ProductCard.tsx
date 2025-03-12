@@ -1,17 +1,28 @@
 // ** Import Functions
-import {textSlicer} from "../utils/functions"; 
+import { textSlicer } from "../utils/functions";
 
-// ** Import Buttons
-import ColorButton from "./Buttons/ColorButton";
-import SizeButton from "./Buttons/SizeButton";
-import Button from "./Buttons/Button";
+// ** Import UI
+import ColorButton from "./UI/ColorButton";
+import SizeButton from "./UI/SizeButton";
+import Button from "./UI/Button";
+import Dialog  from "./UI/Dialog";
 
 // ** Import data
 import { products } from "../data/index";
 const ProductCard = () => {
   return (
-    <>
-      <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 sm:m-22 m-6">
+    <div className="max-w-screen-xl mx-auto px-6 sm:px-8 lg:px-12 m-10">
+
+      {/* Header Section */}
+      <div className="flex justify-between items-center w-full my-6">
+        <h1 className="font-Montserrat font-bold text-4xl text-start my-4 text-blue-500 ">
+          Products
+        </h1>
+        <Dialog />
+      </div>
+
+      {/* Products Grid */}
+      <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {products.map((product) => (
           <div
             key={product.id}
@@ -32,7 +43,9 @@ const ProductCard = () => {
             <div className="w-full p-2">
               {/* Title & Category */}
               <div>
-                <h2 className="font-Montserrat text-2xl">{textSlicer(product.title)}</h2> 
+                <h2 className="font-Montserrat text-2xl">
+                  {textSlicer(product.title)}
+                </h2>
                 <p className="font-Montserrat text-lg text-gray-500">
                   {product.category.name}
                 </p>
@@ -41,11 +54,7 @@ const ProductCard = () => {
               {/* Colors */}
               <div className="flex gap-1 mt-2">
                 {product.colors.map((color, index) => (
-                  <ColorButton
-                    key={index}
-                    className=""
-                    style={{ backgroundColor: color }}
-                  />
+                  <ColorButton key={index} style={{ backgroundColor: color }} />
                 ))}
               </div>
 
@@ -73,8 +82,9 @@ const ProductCard = () => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
 export default ProductCard;
+
