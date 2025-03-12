@@ -6,10 +6,10 @@ interface Iprops extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   width?: "w-full" | "w-auto" | "w-fit";
 }
 
-const Button = ({ children, className, width = "w-full", ...rest }: Iprops) => {
+const Button = ({ children, className = "", width = "w-auto", ...rest }: Iprops) => {
   return (
     <button
-      className={`${className} ${width} rounded-md px-2 py-1.5 transition-colors duration-100`}
+      className={`rounded-md px-4 py-2 transition-colors duration-100 ${width} ${className}`}
       {...rest}
     >
       {children}

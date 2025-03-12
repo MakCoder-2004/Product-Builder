@@ -11,3 +11,11 @@ export interface Iproducts {
         imageURL: string;
     };
 }
+
+export interface IProductFormList {
+    id: string;
+    name: string;
+    label: string;
+    type: string;
+    required: boolean;
+}

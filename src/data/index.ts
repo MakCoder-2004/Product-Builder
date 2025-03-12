@@ -1,4 +1,4 @@
-import { Iproducts } from "../interfaces/Iproducts";
+import { Iproducts, IProductFormList } from "../interfaces";
 
 export const products: Iproducts[] = [
     {
@@ -105,4 +105,50 @@ export const products: Iproducts[] = [
             imageURL: "https://image.goat.com/750/attachments/product_template_pictures/images/082/721/311/original/860431_00.png.png",
         },
     },
+];
+
+export const ProductFormList: IProductFormList[] = [
+    {
+        id: "title",
+        name: "title",
+        label: "Product Title",
+        type: "text",
+        required: true,
+    },
+    {
+        id: "description",
+        name: "description",
+        label: "Product Description",
+        type: "textarea",
+        required: true,
+    },
+    {
+        id: "imageURL",
+        name: "imageURL",
+        label: "Product Image URL",
+        type: "text",
+        required: true,
+    },
+    {
+        id: "price",
+        name: "price",
+        label: "Product Price",
+        type: "number",
+        required: true,
+    },
+    {
+        id: "colors",
+        name: "colors",
+        label: "Product Colors (comma-separated)",
+        type: "text",
+        required: true,
+    },
+    {
+        id: "category",
+        name: "category",
+        label: "Product Category",
+        type: "text",
+        required: true,
+    },
+
 ];
