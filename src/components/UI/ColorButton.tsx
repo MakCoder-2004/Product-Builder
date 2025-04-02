@@ -1,14 +1,14 @@
-interface Iprops {
+interface ColorButtonProps {
+  color: string;
   className?: string;
-  style?: React.CSSProperties; // ✅ Add this
 }
 
-const ColorButton = ({ className, style }: Iprops) => {
+const ColorButton = ({ color, className }: ColorButtonProps) => {
   return (
-    <button
-      className={`border border-slate-600 rounded-full w-6 h-6 hover:scale-110 transition-transform duration-200 cursor-pointer ${className}`}
-      style={style}
-    ></button>
+    <div 
+      className={`inline-block rounded-full border border-gray-300 ${className}`}
+      style={{ backgroundColor: color }}
+    />
   );
 };
 

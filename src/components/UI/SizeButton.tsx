@@ -1,15 +1,13 @@
-interface Iprops {
-  children: React.ReactNode;
+interface SizeButtonProps {
+  size: string;
   className?: string;
 }
-const SizeButton = ({ children, className }: Iprops) => {
+
+const SizeButton = ({ size, className }: SizeButtonProps) => {
   return (
-    <button
-      className={` ${className} border-2 border-gray-400 px-2 font-Montserrat text-lg text-gray-500 hover:bg-gray-400 hover:text-white transition-colors duration-200`}
-    >
-      {children}
-    </button>
+    <span className={`inline-flex items-center justify-center border border-gray-300 rounded ${className}`}>
+      {size}
+    </span>
   );
 };
-
 export default SizeButton;

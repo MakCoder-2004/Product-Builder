@@ -15,32 +15,32 @@ export default function MyModal({
   children,
 }: Iprops) {
   return (
-    <>
-      <Dialog
-        open={isOpen}
-        as="div"
-        className="relative z-10 focus:outline-none"
-        onClose={closeDialog}
-        __demoMode
-      >
-        <div className="fixed inset-0 bg-slate-700/50 bg-opacity-50 z-10">
-          <div className="flex min-h-full items-center justify-center p-4">
-            <DialogPanel
-              transition
-              className="w-full max-w-2xl rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
-            >
-              <DialogTitle
-                as="h3"
-                className="text-2xl font-Montserrat items-center font-bold text-balck border-l-4 border-blue-500 px-3 text-blue-500"
-              >
-                {title}
-              </DialogTitle>
-
-              <div className="mt-4">{children}</div>
-            </DialogPanel>
-          </div>
+    <Dialog
+      open={isOpen}
+      as="div"
+      className="relative z-50"
+      onClose={closeDialog}
+      __demoMode
+    >
+      {/* Backdrop with fade-in animation */}
+      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300" />
+      
+      {/* Modal container with slide-up animation */}
+      <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="flex min-h-full items-center justify-center p-4">
+          <DialogPanel
+            className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-4 text-left align-middle shadow-xl transition-all
+                      duration-300 ease-in-out 
+                      data-[closed]:opacity-0 data-[closed]:scale-95
+                      data-[open]:opacity-100 data-[open]:scale-100"
+          >
+            {/* Content with better spacing */}
+            <div className="mt-2 text-gray-600">
+              {children}
+            </div>
+          </DialogPanel>
         </div>
-      </Dialog>
-    </>
+      </div>
+    </Dialog>
   );
 }

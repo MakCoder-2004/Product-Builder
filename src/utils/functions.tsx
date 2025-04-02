@@ -5,4 +5,8 @@ export const textSlicer = (text: string, maxLength: number = 40): string => {
     return text;
 };
 
-
+export const putZerosAfterPrice = (price: string) => {
+    const priceNumber = parseFloat(price);
+    if (isNaN(priceNumber)) return price;
+    return priceNumber.toFixed(2).toString();
+}
