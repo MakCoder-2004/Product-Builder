@@ -1,12 +1,7 @@
-import { useState, ChangeEvent, FormEvent } from "react";
-import { v4 as uuid } from "uuid";
-
-// ** ----------------------------------------------------------------
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 
 // ** Validation
 import { productValidation } from "../validation/index";
-
-// ** ----------------------------------------------------------------
 
 // ** Data
 import {
@@ -16,40 +11,20 @@ import {
   ProductFormList,
 } from "../data/index";
 
-// ** ----------------------------------------------------------------
-
 // ** Interfaces
 import { Iproducts } from "../interfaces";
 
-interface AddProductModalProps {
+interface EditProductModalProps {
   isOpen: boolean;
   close: () => void;
-  setProducts: React.Dispatch<React.SetStateAction<Iproducts[]>>;
+  productToEdit: Iproducts;
+  setProducts: (updatedProduct: Iproducts) => void;
 }
-
-// ** ----------------------------------------------------------------
 
 // ** UI Components
 import SelectMenue from "./UI/SelectMenue";
 import Button from "./UI/Button";
 import ErrorMsg from "./UI/ErrorMsg";
-
-// ** ----------------------------------------------------------------
-
-// ** Default Objects
-const defaultObject: Iproducts = {
-  title: "",
-  description: "",
-  imageURL: "",
-  price: "",
-  colors: [],
-  sizes: [],
-  category: {
-    id: "",
-    name: "",
-    imageURL: "",
-  },
-};
 
 const defaultErrors = {
   title: "",
@@ -60,55 +35,61 @@ const defaultErrors = {
   sizes: "",
 };
 
-// ** ----------------------------------------------------------------
-
-const AddProductModal = ({ isOpen, close, setProducts }: AddProductModalProps) => {
-  
+const EditProductModal = ({ isOpen, close, productToEdit, setProducts }: EditProductModalProps) => {
   // ** States
-  const [Product, setProduct] = useState<Iproducts>(defaultObject);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState(ProductCategories[0]);
+  const [Product, setProduct] = useState<Iproducts>(productToEdit);
+  const [selectedColors, setSelectedColors] = useState<string[]>(productToEdit.colors || []);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(productToEdit.sizes || []);
+  const [selectedCategory, setSelectedCategory] = useState(
+    ProductCategories.find(cat => cat.id === productToEdit.category.id) || ProductCategories[0]
+  );
   const [errors, setErrors] = useState(defaultErrors);
 
-  // ** ----------------------------------------------------------------
+  // Update states when productToEdit changes
+  useEffect(() => {
+    if (isOpen) {
+      setProduct(productToEdit);
+      setSelectedColors(productToEdit.colors || []);
+      setSelectedSizes(productToEdit.sizes || []);
+      setSelectedCategory(
+        ProductCategories.find(cat => cat.id === productToEdit.category.id) || ProductCategories[0]
+      );
+      setErrors(defaultErrors);
+    }
+  }, [productToEdit, isOpen]);
 
   // ** Event Handlers
   const onChangeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     
-    setProduct((prev) => ({
+    setProduct(prev => ({
       ...prev,
       [name]: value,
     }));
     
-    setErrors((prevErrors) => ({
-      ...prevErrors,
+    setErrors(prev => ({
+      ...prev,
       [name]: "",
     }));
   };
 
   const onCancel = () => {
-    setProduct(defaultObject);
-    setSelectedColors([]);
-    setSelectedSizes([]);
-    setErrors(defaultErrors);
     close();
   };
 
   const toggleColorSelection = (colorName: string) => {
-    setSelectedColors((prevSelectedColors) =>
-      prevSelectedColors.includes(colorName)
-        ? prevSelectedColors.filter((name) => name !== colorName)
-        : [...prevSelectedColors, colorName]
+    setSelectedColors(prev =>
+      prev.includes(colorName)
+        ? prev.filter(name => name !== colorName)
+        : [...prev, colorName]
     );
   };
 
   const toggleSizeSelection = (SizeName: string) => {
-    setSelectedSizes((prevSelectedSizes) =>
-      prevSelectedSizes.includes(SizeName)
-        ? prevSelectedSizes.filter((name) => name !== SizeName)
-        : [...prevSelectedSizes, SizeName]
+    setSelectedSizes(prev =>
+      prev.includes(SizeName)
+        ? prev.filter(name => name !== SizeName)
+        : [...prev, SizeName]
     );
   };
 
@@ -125,40 +106,30 @@ const AddProductModal = ({ isOpen, close, setProducts }: AddProductModalProps) =
     if (!isValid) {
       setErrors(errors);
     } else {
-      setProducts((prev) => [
-        {
-          ...Product,
-          id: uuid(),
-          colors: selectedColors,
-          sizes: selectedSizes,
-          category: {
-            id: selectedCategory.id,
-            name: selectedCategory.categoryName,
-            imageURL: selectedCategory.imageURL,
-          },
+      const updatedProduct = {
+        ...Product,
+        colors: selectedColors,
+        sizes: selectedSizes,
+        category: {
+          id: selectedCategory.id,
+          name: selectedCategory.categoryName,
+          imageURL: selectedCategory.imageURL,
         },
-        ...prev,
-      ]);
-      setProduct(defaultObject);
-      setSelectedColors([]);
-      setSelectedSizes([]);
+      };
+      setProducts(updatedProduct);
       close();
     }
   };
 
   if (!isOpen) return null;
 
-  // ** ----------------------------------------------------------------
-
-  // ** Render
-  
   return (
     <div className="fixed inset-0 bg-gray-500/65 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-white rounded-lg w-full max-w-md sm:max-w-2xl max-h-[90vh] overflow-hidden shadow-xl">
         {/* Modal Header */}
         <div className="flex justify-between items-center p-3 sm:p-4 border-b-2 border-blue-500">
           <h2 className="text-lg sm:text-xl font-semibold text-blue-500">
-            Add New Product
+            Edit Product
           </h2>
         </div>
 
@@ -222,7 +193,7 @@ const AddProductModal = ({ isOpen, close, setProducts }: AddProductModalProps) =
               />
             </div>
 
-            {/* Colors Selection - Preserved exactly as original */}
+            {/* Colors Selection */}
             <div className="block text-sm sm:text-base font-medium text-gray-700">Colors:</div>
             <div className="flex flex-wrap gap-2 my-4 justify-center">
               {ProductColors.map((color) => (
@@ -270,7 +241,7 @@ const AddProductModal = ({ isOpen, close, setProducts }: AddProductModalProps) =
               type="submit"
               className="px-3 sm:px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
             >
-              Add Product
+              Save Changes
             </Button>
           </div>
         </form>
@@ -279,4 +250,4 @@ const AddProductModal = ({ isOpen, close, setProducts }: AddProductModalProps) =
   );
 };
 
-export default AddProductModal;
+export default EditProductModal;

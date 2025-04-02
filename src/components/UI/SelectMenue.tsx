@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import { CheckIcon } from "@heroicons/react/24/solid";
@@ -14,7 +13,6 @@ interface SelectMenuProps {
 function SelectMenue({ selected, setSelected }: SelectMenuProps) {
   return (
     <Listbox value={selected} onChange={setSelected}>
-      <Listbox.Label className="block text-sm font-medium text-gray-700">Category</Listbox.Label>
       <div className="relative mt-2">
         <Listbox.Button className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline outline-3 outline-gray-300 focus:outline-indigo-600 sm:text-sm">
           <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
