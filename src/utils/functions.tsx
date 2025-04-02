@@ -4,3 +4,5 @@ export const textSlicer = (text: string, maxLength: number = 40): string => {
     }
     return text;
 };
+
+

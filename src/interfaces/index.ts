@@ -3,7 +3,8 @@ export interface Iproducts {
     title: string;
     description: string;
     imageURL: string;
-    price: number;
+    price: string;
+    sizes: string[];
     colors: string[];
     category: {
         id?: string;
@@ -14,8 +15,14 @@ export interface Iproducts {
 
 export interface IProductFormList {
     id: string;
-    name: string;
+    name: 'title' | 'description' | 'imageURL' | 'price';
     label: string;
     type: string;
     required: boolean;
+}
+
+export interface IProductCategory {
+    id: string;
+    categoryName: string;
+    imageURL: string;
 }
