@@ -45,7 +45,7 @@ export const productValidation = (
     }
   
     // Image URL validation
-    if (!product.imageURL.trim() || typeof product.imageURL !== "string" || !/^https?:\/\/[^\s]+$/.test(product.imageURL)) {
+    if (!product.imageURL.trim() || typeof product.imageURL !== "string") {
       errors.imageURL = "Product image URL must be a valid URL";
       isValid = false;
     }

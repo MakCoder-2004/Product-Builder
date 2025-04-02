@@ -101,15 +101,22 @@ const AddProductModal = ({ isOpen, close, onAddProduct }: AddProductModalProps) 
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    console.log("Form submitted"); // Debug log
     
     const { title, description, price, imageURL } = product;
+    console.log("Current product state:", product); // Debug log
+    console.log("Selected colors:", selectedColors); // Debug log
+    console.log("Selected sizes:", selectedSizes); // Debug log
+    
     const validationResult = productValidation(
       { title, description, price, imageURL },
       selectedColors,
       selectedSizes
     );
+    console.log("Validation result:", validationResult); // Debug log
     
     if (!validationResult.isValid) {
+      console.log("Validation failed with errors:", validationResult.errors); // Debug log
       setErrors(validationResult.errors);
       return;
     }
@@ -125,6 +132,7 @@ const AddProductModal = ({ isOpen, close, onAddProduct }: AddProductModalProps) 
         imageURL: selectedCategory.imageURL,
       },
     };
+    console.log("New product to add:", newProduct); // Debug log
 
     onAddProduct(newProduct);
     setProduct(defaultObject);
